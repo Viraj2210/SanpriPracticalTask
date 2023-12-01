@@ -79,12 +79,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 activityMainBinding.btnSave.visibility = View.VISIBLE
-                // Create media controller for play, pause, etc.
                 val mediaController = MediaController(this)
                 mediaController.setAnchorView(videoView)
                 videoView.setMediaController(mediaController)
 
-                // Start playing the video
                 videoView.start()
                 Log.v("MediaUrl",""+selectedMediaUri)
                 selectedMediaUri?.let {
@@ -96,7 +94,6 @@ class MainActivity : AppCompatActivity() {
 
                         Log.v("Base64",""+base64String)
 
-                       // val base64String = convertMediaToBase64(it)
                         val uploadMediaReq1 = UploadMediaReq(fileName,fileExtension,
                             "94cdffda0d6376c73f5d83c263f05653","viraj_pawar", base64String!!
                         )
@@ -124,12 +121,10 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding.imageView.visibility = View.GONE
         activityMainBinding.videoView.visibility = View.GONE
         activityMainBinding.btnSave.visibility = View.GONE
-        //contentResolver = getContentResolver()
         lifecycleScope.launchWhenCreated {
             connectivityObserver.observe().collect {
                 if (it.equals(ConnectivityObserver.Status.Lost)){
                     launchActivity<NoInternetConnectivity>()
-                    //Toast.makeText(this@MainActivity,"No Internet available",Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -201,7 +196,7 @@ class MainActivity : AppCompatActivity() {
             if (inputStream != null) {
                 val bufferedInputStream = BufferedInputStream(inputStream)
 
-                val chunkSize = 1024 * 1024 // 1 GB chunk size (adjust as needed)
+                val chunkSize = 1024 * 1024
                 val byteArray = ByteArray(chunkSize)
                 val stringBuilder = StringBuilder()
 
@@ -260,11 +255,7 @@ class MainActivity : AppCompatActivity() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                // Permission granted, now you can open the gallery
                 openGalleryForImageOrVideo()
-            } else {
-                // Handle the case where the user denied the permission
-                // You may show a message or take appropriate action
             }
         }
 
