@@ -15,11 +15,7 @@ Upload Sequence: Each chunk is uploaded sequentially to the server, and the serv
 Error Handling: If an upload fails, only the failed chunk is retried.
 Resumption: In the event of network failure or an app restart, the upload resumes from the last successfully uploaded chunk.
 Installation
-Clone the repository:
 
-bash
-Copy code
-git clone https://github.com/yourusername/video-chunk-upload.git
 Open the project in Android Studio.
 
 Sync the project to download dependencies.
@@ -48,22 +44,27 @@ fun splitFileIntoChunks(file: File, chunkSize: Int): List<File> {
     // Logic to divide the file into chunks and store them temporarily
     return chunks
 }
+
 Step 3: Upload Each Chunk
 Each chunk is uploaded in sequence, and a response from the server confirms success:
 
 kotlin
 Copy code
 fun uploadChunk(chunk: File, serverUrl: String): Boolean {
+
     // Logic to upload a chunk of the video file
     // Return true if successful
     return true
 }
+
 Step 4: Resume Interrupted Uploads
 The system saves the index of the last successfully uploaded chunk. If an upload is interrupted, the process resumes from the last chunk:
 
 kotlin
 Copy code
+
 fun resumeUpload(startChunkIndex: Int, chunks: List<File>, serverUrl: String) {
+
     for (i in startChunkIndex until chunks.size) {
         // Upload the remaining chunks
     }
@@ -76,16 +77,21 @@ If interrupted, the upload can resume from where it left off.
 Example
 kotlin
 Copy code
+
 val videoFile = File("/path/to/video.mp4")
 val chunkSize = 1024 * 1024  // 1 MB
 val chunks = splitFileIntoChunks(videoFile, chunkSize)
 
+
 chunks.forEachIndexed { index, chunk ->
+
     val success = uploadChunk(chunk, "https://your-server/upload")
     if (!success) {
+    
         // Retry logic
     }
 }
+
 Notes
 Ensure the server-side implementation supports chunked uploads and properly handles the reassembly of the file.
 Make sure the file size and chunk size are appropriate for your use case.
